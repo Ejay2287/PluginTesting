@@ -3,6 +3,7 @@ using System.Numerics;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
 using Lumina.Excel.Sheets;
 
@@ -31,6 +32,12 @@ public class MainWindow : Window, IDisposable
 
     public void Dispose() { }
 
+    public unsafe bool IsPlayerMentor() {
+        var playerStatePtr = PlayerState.Instance();
+        return playerStatePtr->IsTradeMentor();
+    }
+    
+    
     public override void Draw()
     {
         // Do not use .Text() or any other formatted function like TextWrapped(), or SetTooltip().
@@ -38,7 +45,6 @@ public class MainWindow : Window, IDisposable
         // provide through our bindings, leading to a Crash to Desktop.
         // Replacements can be found in the ImGuiHelpers Class
         ImGui.TextUnformatted($"The random config bool is {Plugin.Configuration.SomePropertyToBeSavedAndWithADefault}");
-
         if (ImGui.Button("Show Settings"))
         {
             Plugin.ToggleConfigUI();
